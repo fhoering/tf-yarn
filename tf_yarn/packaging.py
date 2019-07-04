@@ -374,12 +374,23 @@ def get_current_pex_filepath() -> str:
 
 
 def get_editable_requirements_from_current_venv():
+    editable_requirements = {}
     if _running_from_pex():
-        return dict()
-    files = {}
-    for requirement_dir in get_editable_requirements():
-        files[os.path.basename(requirement_dir)] = requirement_dir
-    return files
+        files = os.listdir()
+        filter = []
+        file = next((f for f in files if f == "editable_files"), None)
+        if file is not None:
+            with open(file, "r") as read_lines_file:
+                filter = read_lines_file.read().splitlines()
+
+        editable_requirements = {file: file for file in files
+                                 if os.path.isdir(file) and file in filter}
+    else:
+        editable_requirements = {os.path.basename(requirement_dir): requirement_dir
+                                 for requirement_dir in get_editable_requirements()}
+
+    _logger.info(f"found editable requirements {editable_requirements}")
+    return editable_requirements
 
 
 def get_default_fs():
