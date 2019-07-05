@@ -5,14 +5,12 @@ python:
   - "3.6"
 
 install:
-  - pwd
   - pip install .
   - pip install pytest
   - pip freeze
 
 script:
-  - pwd
-  - pytest tf-yarn/tests
+  - pytest tests
 
 notifications:
   email: false
