@@ -5,7 +5,7 @@ python:
   - "3.6"
 
 install:
-  - cd tf-yarn
+  - cd criteo/tf-yarn
   - pip install .
   - pip install pytest
   - pip freeze
